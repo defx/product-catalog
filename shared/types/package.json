@@ -1,0 +1,8 @@
+{
+  "name": "@moneybox/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for Moneybox Product Catalog",
+  "main": "index.ts",
+  "types": "index.ts",
+  "private": true
+}

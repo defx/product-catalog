@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import categoriesRouter from './routes/categories';
+import productsRouter from './routes/products';
 
 // Load environment variables
 dotenv.config();
@@ -31,14 +33,9 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
-// Placeholder routes (will be implemented in Phase 1.2)
-app.get('/api/categories', (req: Request, res: Response) => {
-  res.json({ message: 'Categories endpoint - to be implemented' });
-});
-
-app.get('/api/products', (req: Request, res: Response) => {
-  res.json({ message: 'Products endpoint - to be implemented' });
-});
+// API routes
+app.use('/api/categories', categoriesRouter);
+app.use('/api/products', productsRouter);
 
 // 404 handler
 app.use((req: Request, res: Response) => {

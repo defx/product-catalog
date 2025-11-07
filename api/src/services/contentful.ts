@@ -1,0 +1,93 @@
+import { createClient, Entry, Asset } from 'contentful';
+import { Document } from '@contentful/rich-text-types';
+import { Category, Product } from '@moneybox/shared-types';
+
+// Contentful field interfaces
+interface ContentfulCategory {
+  name: string;
+  description?: Document;
+  order: number;
+}
+
+interface ContentfulProduct {
+  name: string;
+  description: Document;
+  category: Entry<ContentfulCategory>;
+  image: Asset;
+}
+
+// Initialize Contentful client
+const client = createClient({
+  space: process.env.CONTENTFUL_SPACE_ID || '',
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
+  environment: process.env.CONTENTFUL_ENVIRONMENT || 'master',
+});
+
+/**
+ * Fetch all categories from Contentful
+ */
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const response = await client.getEntries<ContentfulCategory>({
+      content_type: 'category',
+      order: ['fields.order'],
+    });
+
+    return response.items.map((item) => ({
+      id: item.sys.id,
+      name: item.fields.name,
+      description: item.fields.description,
+      order: item.fields.order,
+    }));
+  } catch (error) {
+    console.error('Error fetching categories from Contentful:', error);
+    throw new Error('Failed to fetch categories');
+  }
+}
+
+/**
+ * Fetch all products from Contentful
+ */
+export async function getProducts(): Promise<Product[]> {
+  try {
+    const response = await client.getEntries<ContentfulProduct>({
+      content_type: 'product',
+      include: 2, // Include linked entries (category) and assets (image)
+    });
+
+    return response.items.map((item) => ({
+      id: item.sys.id,
+      name: item.fields.name,
+      description: item.fields.description,
+      categoryId: item.fields.category.sys.id,
+      image: item.fields.image.fields.file?.url || '',
+    }));
+  } catch (error) {
+    console.error('Error fetching products from Contentful:', error);
+    throw new Error('Failed to fetch products');
+  }
+}
+
+/**
+ * Fetch products by category ID
+ */
+export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
+  try {
+    const response = await client.getEntries<ContentfulProduct>({
+      content_type: 'product',
+      'fields.category.sys.id': categoryId,
+      include: 2,
+    });
+
+    return response.items.map((item) => ({
+      id: item.sys.id,
+      name: item.fields.name,
+      description: item.fields.description,
+      categoryId: item.fields.category.sys.id,
+      image: item.fields.image.fields.file?.url || '',
+    }));
+  } catch (error) {
+    console.error('Error fetching products by category from Contentful:', error);
+    throw new Error('Failed to fetch products by category');
+  }
+}
