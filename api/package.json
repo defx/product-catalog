@@ -14,7 +14,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "env:key": "sh -c 'echo DOTENV_PRIVATE_KEY=$1 > .env.keys' --"
   },
   "dependencies": {
     "contentful": "^11.8.11",
