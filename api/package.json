@@ -4,25 +4,41 @@
   "description": "Moneybox Product Catalog - API",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "dotenvx run -- ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "contentful space migration --space-id=$CONTENTFUL_SPACE_ID --environment-id=$CONTENTFUL_ENVIRONMENT --access-token=$CONTENTFUL_MANAGEMENT_TOKEN"
+    "start": "dotenvx run -- node dist/server.js",
+    "test": "dotenvx run -- vitest",
+    "test:watch": "dotenvx run -- vitest --watch",
+    "test:coverage": "dotenvx run -- vitest --coverage",
+    "migrate": "dotenvx run -- contentful space migration --space-id=$CONTENTFUL_SPACE_ID --environment-id=$CONTENTFUL_ENVIRONMENT --access-token=$CONTENTFUL_MANAGEMENT_TOKEN",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "contentful": "^11.8.11",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.0",
+    "@types/supertest": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "@vitest/ui": "^4.0.8",
     "contentful-cli": "^3.9.12",
     "contentful-management": "^11.62.1",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "supertest": "^7.1.4",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
   }
 }

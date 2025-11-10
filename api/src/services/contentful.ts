@@ -1,19 +1,24 @@
-import { createClient, Entry, Asset } from 'contentful';
-import { Document } from '@contentful/rich-text-types';
+import { createClient, EntrySkeletonType, EntryFieldTypes, Asset } from 'contentful';
 import { Category, Product } from '@moneybox/shared-types';
 
-// Contentful field interfaces
-interface ContentfulCategory {
-  name: string;
-  description?: Document;
-  order: number;
+// Contentful entry skeleton types (required by SDK)
+interface ContentfulCategorySkeleton extends EntrySkeletonType {
+  contentTypeId: 'category';
+  fields: {
+    name: EntryFieldTypes.Symbol;
+    description?: EntryFieldTypes.RichText;
+    order: EntryFieldTypes.Integer;
+  };
 }
 
-interface ContentfulProduct {
-  name: string;
-  description: Document;
-  category: Entry<ContentfulCategory>;
-  image: Asset;
+interface ContentfulProductSkeleton extends EntrySkeletonType {
+  contentTypeId: 'product';
+  fields: {
+    name: EntryFieldTypes.Symbol;
+    description: EntryFieldTypes.RichText;
+    category: EntryFieldTypes.EntryLink<ContentfulCategorySkeleton>;
+    image: EntryFieldTypes.AssetLink;
+  };
 }
 
 // Initialize Contentful client
@@ -28,7 +33,7 @@ const client = createClient({
  */
 export async function getCategories(): Promise<Category[]> {
   try {
-    const response = await client.getEntries<ContentfulCategory>({
+    const response = await client.getEntries<ContentfulCategorySkeleton>({
       content_type: 'category',
       order: ['fields.order'],
     });
@@ -50,18 +55,25 @@ export async function getCategories(): Promise<Category[]> {
  */
 export async function getProducts(): Promise<Product[]> {
   try {
-    const response = await client.getEntries<ContentfulProduct>({
+    const response = await client.getEntries<ContentfulProductSkeleton>({
       content_type: 'product',
       include: 2, // Include linked entries (category) and assets (image)
     });
 
-    return response.items.map((item) => ({
-      id: item.sys.id,
-      name: item.fields.name,
-      description: item.fields.description,
-      categoryId: item.fields.category.sys.id,
-      image: item.fields.image.fields.file?.url || '',
-    }));
+    return response.items.map((item) => {
+      const image = item.fields.image as Asset;
+      const imageUrl = typeof image.fields.file?.url === 'string'
+        ? image.fields.file.url
+        : '';
+
+      return {
+        id: item.sys.id,
+        name: item.fields.name,
+        description: item.fields.description,
+        categoryId: item.fields.category.sys.id,
+        image: imageUrl,
+      };
+    });
   } catch (error) {
     console.error('Error fetching products from Contentful:', error);
     throw new Error('Failed to fetch products');
@@ -73,19 +85,26 @@ export async function getProducts(): Promise<Product[]> {
  */
 export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
   try {
-    const response = await client.getEntries<ContentfulProduct>({
+    const response = await client.getEntries<ContentfulProductSkeleton>({
       content_type: 'product',
       'fields.category.sys.id': categoryId,
       include: 2,
     });
 
-    return response.items.map((item) => ({
-      id: item.sys.id,
-      name: item.fields.name,
-      description: item.fields.description,
-      categoryId: item.fields.category.sys.id,
-      image: item.fields.image.fields.file?.url || '',
-    }));
+    return response.items.map((item) => {
+      const image = item.fields.image as Asset;
+      const imageUrl = typeof image.fields.file?.url === 'string'
+        ? image.fields.file.url
+        : '';
+
+      return {
+        id: item.sys.id,
+        name: item.fields.name,
+        description: item.fields.description,
+        categoryId: item.fields.category.sys.id,
+        image: imageUrl,
+      };
+    });
   } catch (error) {
     console.error('Error fetching products by category from Contentful:', error);
     throw new Error('Failed to fetch products by category');

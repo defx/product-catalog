@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+cd api
+npm run lint && npm run typecheck
