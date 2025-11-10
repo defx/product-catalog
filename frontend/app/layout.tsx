@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { QueryProvider } from "./lib/providers/QueryProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Moneybox Product Catalog",

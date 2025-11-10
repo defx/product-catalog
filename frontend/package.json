@@ -13,15 +13,18 @@
     "test:ui": "dotenvx run -- vitest --ui"
   },
   "dependencies": {
+    "@contentful/rich-text-plain-text-renderer": "^17.1.6",
     "@contentful/rich-text-react-renderer": "^16.1.6",
     "@contentful/rich-text-types": "^17.2.5",
     "@tanstack/react-query": "^5.90.7",
+    "embla-carousel-react": "^8.6.0",
     "next": "^16.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.51.1",
+    "@tailwindcss/postcss": "^4.1.17",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^24.10.0",
@@ -29,7 +32,10 @@
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/ui": "^4.0.8",
+    "autoprefixer": "^10.4.21",
     "jsdom": "^27.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   }

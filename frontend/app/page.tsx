@@ -1,6 +1,5 @@
-import { CategoryList } from './components/CategoryList';
-import { ProductList } from './components/ProductList';
 import { fetchCategories, fetchProducts } from './lib/api';
+import { ProductCatalog } from './components/ProductCatalog';
 
 export default async function Home() {
   // Fetch data on the server
@@ -10,17 +9,17 @@ export default async function Home() {
   ]);
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>Moneybox Product Catalog</h1>
-      <p>Explore our range of financial products</p>
+    <main className="container mx-auto px-4 py-8 max-w-7xl">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          Moneybox Product Catalog
+        </h1>
+        <p className="text-lg text-gray-600">
+          Explore our range of financial products
+        </p>
+      </header>
 
-      <div style={{ marginTop: '2rem' }}>
-        <CategoryList categories={categories} />
-      </div>
-
-      <div style={{ marginTop: '2rem' }}>
-        <ProductList products={products} />
-      </div>
+      <ProductCatalog categories={categories} products={products} />
     </main>
   );
 }
