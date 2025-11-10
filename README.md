@@ -32,10 +32,14 @@ A cross-platform product catalog system built with Next.js, Express API, and Con
 
 3. **Configure environment variables**
 
-   A complete `.env` file with all necessary credentials is provided via 1Password link (see submission email).
+   The project uses [dotenvx](https://dotenvx.com/) for encrypted environment variable management. The encrypted `.env` file is already committed in the `api/` directory.
 
-   - Place the `.env` file in the `api/` directory
-   - The frontend will automatically connect to the API running on `http://localhost:3001`
+   Set the decryption key (provided in submission email):
+   ```bash
+   export DOTENV_PRIVATE_KEY="<key_from_email>"
+   ```
+
+   The frontend will automatically connect to the API running on `http://localhost:3001`
 
 4. **Run the application**
 
@@ -59,14 +63,25 @@ A cross-platform product catalog system built with Next.js, Express API, and Con
 
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+6. **Run tests** (optional)
+
+   ```bash
+   # Run API tests
+   cd api
+   npm test
+
+   # Run Frontend tests
+   cd frontend
+   npm test
+   ```
+
 ## Contentful CMS Access
 
 The application uses Contentful as its headless CMS. You can log in and test content updates:
 
 1. **Login to Contentful**: [https://app.contentful.com/](https://app.contentful.com/)
 
-   - Username: `CMS_USERNAME` (found in provided `.env` file)
-   - Password: `CMS_PASSWORD` (found in provided `.env` file)
+   - Credentials are provided in the submission email
 
 2. **What you'll see**:
 
@@ -81,6 +96,46 @@ The application uses Contentful as its headless CMS. You can log in and test con
    - Refresh the frontend - changes appear immediately
 
 The content model was created using migration scripts (found in `api/migrations/`) ensuring reproducibility and version control of the CMS schema.
+
+## Testing
+
+This project includes a comprehensive test suite that validates the acceptance criteria from the brief. Tests can be run without requiring manual verification of each requirement.
+
+### Running Tests
+
+```bash
+# API tests (routes, services, integration)
+cd api
+npm test
+
+# Frontend tests (components)
+cd frontend
+npm test
+
+# Run with coverage
+npm run test:coverage  # in either api/ or frontend/
+```
+
+### What's Tested
+
+**API Layer** (`api/src/tests/`)
+- ✅ Route tests validate API endpoints return correct data structure
+- ✅ Service layer tests prove Contentful data transformation works
+- ✅ Integration tests validate the complete CMS → API → Response flow
+- ✅ Cross-platform API contract tests ensure mobile apps can consume data
+
+**Frontend Layer** (`frontend/app/components/__tests__/`)
+- ✅ Component tests validate categories and products render correctly
+- ✅ Image and description display tests (brief requirements)
+- ✅ Empty state handling
+
+**What This Validates**:
+- "Business user can update page" - Integration tests prove CMS updates flow through
+- "Accessible by another platform" - API tests validate JSON responses for mobile consumption
+- "Show an Image & Description" - Component and service tests verify this works
+- "Display all Categories/Products" - Route and component tests validate data display
+
+See [TESTING.md](TESTING.md) for detailed testing strategy and philosophy.
 
 ## Architecture Overview
 

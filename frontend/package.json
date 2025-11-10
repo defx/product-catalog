@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "dotenvx run -- vitest",
+    "test:watch": "dotenvx run -- vitest --watch",
+    "test:ui": "dotenvx run -- vitest --ui"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.6",
@@ -19,9 +21,16 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "typescript": "^5.9.3"
+    "@vitejs/plugin-react": "^5.1.0",
+    "@vitest/ui": "^4.0.8",
+    "jsdom": "^27.1.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
   }
 }

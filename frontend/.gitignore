@@ -24,7 +24,7 @@ yarn-error.log*
 
 # Local env files
 .env*.local
-.env
+# .env is committed with non-sensitive defaults (only NEXT_PUBLIC_API_URL)
 
 # Vercel
 .vercel

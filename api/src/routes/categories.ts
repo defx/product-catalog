@@ -7,7 +7,7 @@ const router = Router();
  * GET /api/categories
  * Fetch all categories from Contentful
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const categories = await getCategories();
     res.json(categories);

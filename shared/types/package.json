@@ -4,5 +4,8 @@
   "description": "Shared TypeScript types for Moneybox Product Catalog",
   "main": "index.ts",
   "types": "index.ts",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@contentful/rich-text-types": "^17.2.5"
+  }
 }

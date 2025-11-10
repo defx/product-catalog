@@ -2,7 +2,7 @@
 node_modules/
 
 # Environment variables
-.env
+.env.keys
 .env.local
 .env*.local
 
@@ -30,3 +30,9 @@ coverage/
 
 # Misc
 .turbo
+
+# Reference documentation
+docs/
+
+# Claude session context
+CLAUDE.md
