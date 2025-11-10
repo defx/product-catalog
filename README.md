@@ -35,8 +35,9 @@ A cross-platform product catalog system built with Next.js, Express API, and Con
    The project uses [dotenvx](https://dotenvx.com/) for encrypted environment variable management. The encrypted `.env` file is already committed in the `api/` directory.
 
    Set the decryption key (provided in submission email):
+
    ```bash
-   export DOTENV_PRIVATE_KEY="<key_from_email>"
+   cd api && npm run env:key <key_from_email>
    ```
 
    The frontend will automatically connect to the API running on `http://localhost:3001`
@@ -119,17 +120,20 @@ npm run test:coverage  # in either api/ or frontend/
 ### What's Tested
 
 **API Layer** (`api/src/tests/`)
+
 - ✅ Route tests validate API endpoints return correct data structure
 - ✅ Service layer tests prove Contentful data transformation works
 - ✅ Integration tests validate the complete CMS → API → Response flow
 - ✅ Cross-platform API contract tests ensure mobile apps can consume data
 
 **Frontend Layer** (`frontend/app/components/__tests__/`)
+
 - ✅ Component tests validate categories and products render correctly
 - ✅ Image and description display tests (brief requirements)
 - ✅ Empty state handling
 
 **What This Validates**:
+
 - "Business user can update page" - Integration tests prove CMS updates flow through
 - "Accessible by another platform" - API tests validate JSON responses for mobile consumption
 - "Show an Image & Description" - Component and service tests verify this works
