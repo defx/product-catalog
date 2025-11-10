@@ -22,7 +22,7 @@ export function ProductAccordion({ products, children }: ProductAccordionProps) 
       type="single"
       collapsible
       className="w-full"
-      defaultValue={products[0]?.id}
+      defaultValue={products[0]?.id} // Parent ensures products.length > 0
     >
       {products.map((product) => (
         <AccordionItem key={product.id} value={product.id}>
