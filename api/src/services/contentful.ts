@@ -29,6 +29,14 @@ const client = createClient({
 });
 
 /**
+ * Extract image URL from Contentful asset
+ */
+function extractImageUrl(image: Asset | undefined): string {
+  const url = image?.fields.file?.url;
+  return typeof url === 'string' ? url : '';
+}
+
+/**
  * Fetch all categories from Contentful
  */
 export async function getCategories(): Promise<Category[]> {
@@ -60,18 +68,13 @@ export async function getProducts(): Promise<Product[]> {
       include: 2, // Include linked entries (category) and assets (image)
     });
 
-    return response.items.map((item) => {
-      const image = item.fields.image as Asset | undefined;
-      const imageUrl = image?.fields.file?.url ?? '';
-
-      return {
-        id: item.sys.id,
-        name: item.fields.name,
-        description: item.fields.description,
-        categoryId: item.fields.category.sys.id,
-        image: typeof imageUrl === 'string' ? imageUrl : '',
-      };
-    });
+    return response.items.map((item) => ({
+      id: item.sys.id,
+      name: item.fields.name,
+      description: item.fields.description,
+      categoryId: item.fields.category.sys.id,
+      image: extractImageUrl(item.fields.image as Asset | undefined),
+    }));
   } catch (error) {
     console.error('Error fetching products from Contentful:', error);
     throw new Error('Failed to fetch products');
@@ -89,18 +92,13 @@ export async function getProductsByCategory(categoryId: string): Promise<Product
       include: 2,
     });
 
-    return response.items.map((item) => {
-      const image = item.fields.image as Asset | undefined;
-      const imageUrl = image?.fields.file?.url ?? '';
-
-      return {
-        id: item.sys.id,
-        name: item.fields.name,
-        description: item.fields.description,
-        categoryId: item.fields.category.sys.id,
-        image: typeof imageUrl === 'string' ? imageUrl : '',
-      };
-    });
+    return response.items.map((item) => ({
+      id: item.sys.id,
+      name: item.fields.name,
+      description: item.fields.description,
+      categoryId: item.fields.category.sys.id,
+      image: extractImageUrl(item.fields.image as Asset | undefined),
+    }));
   } catch (error) {
     console.error('Error fetching products by category from Contentful:', error);
     throw new Error('Failed to fetch products by category');
