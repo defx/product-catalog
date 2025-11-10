@@ -1,18 +1,27 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ProductCatalog } from '../ProductCatalog';
 import { Category, Product } from '@moneybox/shared-types';
 import { BLOCKS, Document } from '@contentful/rich-text-types';
 
-// Mock the Carousel component
-vi.mock('../Carousel', () => ({
-  Carousel: ({ items, renderItem }: any) => (
-    <div data-testid="carousel">
-      {items.map((item: any, index: number) => (
-        <div key={item.id}>{renderItem(item, index)}</div>
-      ))}
-    </div>
-  ),
+// Mock the shadcn UI components
+vi.mock('@/components/ui/carousel', () => ({
+  Carousel: ({ children }: any) => <div data-testid="carousel">{children}</div>,
+  CarouselContent: ({ children }: any) => <div>{children}</div>,
+  CarouselItem: ({ children }: any) => <div>{children}</div>,
+  CarouselPrevious: () => <button>Previous</button>,
+  CarouselNext: () => <button>Next</button>,
+}));
+
+vi.mock('@/components/ui/card', () => ({
+  Card: ({ children, className }: any) => <div className={className}>{children}</div>,
+}));
+
+vi.mock('@/components/ui/accordion', () => ({
+  Accordion: ({ children }: any) => <div>{children}</div>,
+  AccordionItem: ({ children }: any) => <div>{children}</div>,
+  AccordionTrigger: ({ children }: any) => <button>{children}</button>,
+  AccordionContent: ({ children }: any) => <div>{children}</div>,
 }));
 
 describe('ProductCatalog', () => {
@@ -26,6 +35,11 @@ describe('ProductCatalog', () => {
       id: 'cat-2',
       name: 'Pensions',
       order: 2,
+    },
+    {
+      id: 'cat-3',
+      name: 'Empty Category',
+      order: 3,
     },
   ];
 
@@ -65,100 +79,97 @@ describe('ProductCatalog', () => {
     },
   ];
 
-  it('renders category carousel', () => {
+  it('renders carousel with header and navigation', () => {
     render(
       <ProductCatalog categories={mockCategories} products={mockProducts} />
     );
 
-    expect(screen.getByText('Categories')).toBeInTheDocument();
+    expect(screen.getByText('Explore Accounts')).toBeInTheDocument();
+    expect(screen.getByText('Previous')).toBeInTheDocument();
+    expect(screen.getByText('Next')).toBeInTheDocument();
     expect(screen.getByTestId('carousel')).toBeInTheDocument();
   });
 
-  it('renders all products by default', () => {
+  it('renders all categories with products', () => {
     render(
       <ProductCatalog categories={mockCategories} products={mockProducts} />
     );
 
-    expect(screen.getByText('All Products')).toBeInTheDocument();
+    expect(screen.getByText('ISAs')).toBeInTheDocument();
+    expect(screen.getByText('Pensions')).toBeInTheDocument();
   });
 
-  it('filters products when category is selected', () => {
+  it('filters out categories with no products', () => {
     render(
       <ProductCatalog categories={mockCategories} products={mockProducts} />
     );
 
-    // Click on ISAs category card
-    const isaButton = screen.getByRole('button', { name: /ISAs/i });
-    fireEvent.click(isaButton);
-
-    // Should show filtered header
-    expect(screen.getByText('ISAs Products')).toBeInTheDocument();
+    // Empty Category should not be rendered
+    expect(screen.queryByText('Empty Category')).not.toBeInTheDocument();
   });
 
-  it('shows clear filter button when category is selected', () => {
+  it('renders products within their category slides', () => {
     render(
       <ProductCatalog categories={mockCategories} products={mockProducts} />
     );
 
-    // Initially no clear button
-    expect(screen.queryByText('Clear filter')).not.toBeInTheDocument();
+    // Products for ISAs category
+    expect(screen.getByText('Stocks & Shares ISA')).toBeInTheDocument();
+    expect(screen.getByText('Lifetime ISA')).toBeInTheDocument();
 
-    // Click on a category
-    const isaButton = screen.getByRole('button', { name: /ISAs/i });
-    fireEvent.click(isaButton);
-
-    // Clear button should appear
-    expect(screen.getByText('Clear filter')).toBeInTheDocument();
+    // Product for Pensions category
+    expect(screen.getByText('Personal Pension')).toBeInTheDocument();
   });
 
-  it('clears filter when clear button is clicked', () => {
+  it('renders single product without accordion', () => {
+    const singleProductCategories: Category[] = [
+      {
+        id: 'cat-single',
+        name: 'Single Product Category',
+        order: 1,
+      },
+    ];
+
+    const singleProduct: Product[] = [
+      {
+        id: 'prod-single',
+        name: 'Only Product',
+        categoryId: 'cat-single',
+        description: {
+          nodeType: BLOCKS.DOCUMENT,
+          data: {},
+          content: [],
+        } as Document,
+        image: 'https://example.com/single.jpg',
+      },
+    ];
+
     render(
-      <ProductCatalog categories={mockCategories} products={mockProducts} />
+      <ProductCatalog categories={singleProductCategories} products={singleProduct} />
     );
 
-    // Select a category
-    const isaButton = screen.getByRole('button', { name: /ISAs/i });
-    fireEvent.click(isaButton);
-
-    expect(screen.getByText('ISAs Products')).toBeInTheDocument();
-
-    // Click clear filter
-    const clearButton = screen.getByText('Clear filter');
-    fireEvent.click(clearButton);
-
-    // Should be back to all products
-    expect(screen.getByText('All Products')).toBeInTheDocument();
-    expect(screen.queryByText('Clear filter')).not.toBeInTheDocument();
+    expect(screen.getByText('Single Product Category')).toBeInTheDocument();
+    expect(screen.getByText('Only Product')).toBeInTheDocument();
   });
 
-  it('toggles category selection when clicking same category twice', () => {
+  it('renders multiple products in accordion', () => {
     render(
       <ProductCatalog categories={mockCategories} products={mockProducts} />
     );
 
-    const isaButton = screen.getByRole('button', { name: /ISAs/i });
-
-    // Click once to select
-    fireEvent.click(isaButton);
-    expect(screen.getByText('ISAs Products')).toBeInTheDocument();
-
-    // Click again to deselect
-    fireEvent.click(isaButton);
-    expect(screen.getByText('All Products')).toBeInTheDocument();
+    // ISAs category has 2 products, should use accordion
+    expect(screen.getByText('Stocks & Shares ISA')).toBeInTheDocument();
+    expect(screen.getByText('Lifetime ISA')).toBeInTheDocument();
   });
 
-  it('renders category cards with correct active state', () => {
+  it('renders empty state when no categories with products', () => {
     render(
-      <ProductCatalog categories={mockCategories} products={mockProducts} />
+      <ProductCatalog categories={mockCategories} products={[]} />
     );
 
-    const isaButton = screen.getByRole('button', { name: /ISAs/i });
-
-    // Initially not active
-    expect(isaButton).toHaveAttribute('aria-pressed', 'false');
-
-    // Click to activate
-    fireEvent.click(isaButton);
-    expect(isaButton).toHaveAttribute('aria-pressed', 'true');
+    // Should render carousel header but no category slides
+    expect(screen.getByText('Explore Accounts')).toBeInTheDocument();
+    expect(screen.queryByText('ISAs')).not.toBeInTheDocument();
+    expect(screen.queryByText('Pensions')).not.toBeInTheDocument();
   });
 });

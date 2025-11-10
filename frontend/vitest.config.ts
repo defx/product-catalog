@@ -24,6 +24,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@moneybox/shared-types': path.resolve(__dirname, '../shared/types'),
+      '@': path.resolve(__dirname, './'),
     },
   },
 });
