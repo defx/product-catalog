@@ -301,23 +301,27 @@ Based on the [brief's acceptance criteria](BRIEF.md) and [wireframe design](Wire
 
 **Clean & Modern UI**
 
-- Phase 1.2: Semantic HTML structure without styling (proves data flow)
-- Phase 2.1: In progress - implementing CSS styling and wireframe design
+- Phase 1.2: Semantic HTML structure (proves data flow)
+- Phase 1.3: Testing infrastructure and dotenvx integration
+- Phase 2.1: shadcn/ui components with Tailwind v4, responsive carousel design
 
 ## Time Allocation
 
-Given the 3-hour constraint, time was allocated as follows:
+The project was completed iteratively across multiple phases:
 
 - **Phase 1.1** (~45 mins): Project setup, TypeScript config, CORS, shared types
 - **Phase 1.2** (~1.5 hours): Contentful integration, migrations, API routes, rich text rendering, end-to-end testing
-- **Phase 2.1** (In progress): Adding all products/categories, implementing tests, building UI components with styling
+- **Phase 1.3** (~1.5 hours): Comprehensive test suite (54 tests), dotenvx environment management
+- **Phase 2.1** (~2-3 hours): shadcn/ui integration, carousel and accordion components, responsive design with Tailwind v4
 
-**Reasoning**: Building the complete technical architecture first ensures all requirements _can_ be met before investing time in UI polish. The working vertical slice proves:
+**Reasoning**: Building the complete technical architecture first ensures all requirements _can_ be met before investing time in UI polish. The working vertical slice proved:
 
 - Business users can update content ✅
 - Another platform can access data ✅
 - Images and descriptions work ✅
 - Category and product display works ✅
+
+With the foundation validated, iterative development continued with testing infrastructure and UI implementation.
 
 ## What's Working Now
 
