@@ -259,14 +259,14 @@ This project follows **Shape Up's principle** of building one meaningful vertica
 
 Based on the [brief's acceptance criteria](BRIEF.md) and [wireframe design](Wireframe.png):
 
-| Requirement                                   | Status      | Implementation                                                                                                           |
-| --------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **Business user can update page**             | ✅ Complete | Contentful CMS with user login. No developer needed to add/edit categories or products.                                  |
-| **Accessible by another platform**            | ✅ Complete | Separate Express API (port 3001) returns JSON. Mobile apps or other clients can consume same endpoints.                  |
-| **Display all categories**                    | ✅ Complete | ProductCatalog component with responsive carousel displays all categories from Contentful.                                |
-| **Display products within category**          | ✅ Complete | Products displayed within category slides using accordion (multiple products) or direct display (single product).        |
-| **Show image & description for each product** | ✅ Complete | Images from Contentful CDN. Rich text descriptions rendered with proper formatting.                                      |
-| **Meet UI requirements of wireframe**         | ✅ Complete | Carousel navigation with accordions implemented using shadcn/ui. Mobile-first responsive design with Tailwind v4.        |
+| Requirement                                   | Status      | Implementation                                                                                                             |
+| --------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Business user can update page**             | ✅ Complete | Contentful CMS with user login. No developer needed to add/edit categories or products.                                    |
+| **Accessible by another platform**            | ✅ Complete | Separate Express API (port 3001) returns JSON. Mobile apps or other clients can consume same endpoints.                    |
+| **Display all categories**                    | ✅ Complete | ProductCatalog component with responsive carousel displays all categories from Contentful.                                 |
+| **Display products within category**          | ✅ Complete | Products displayed within category slides using accordion (multiple products) or direct display (single product).          |
+| **Show image & description for each product** | ✅ Complete | Images from Contentful CDN. Rich text descriptions rendered with proper formatting.                                        |
+| **Meet UI requirements of wireframe**         | ✅ Complete | Carousel navigation with accordions implemented using shadcn/ui. Mobile-first responsive design with Tailwind v4.          |
 | **Any required tests**                        | ✅ Complete | 54 tests passing (24 API + 30 frontend) validating routes, services, components, and integration with acceptance criteria. |
 
 ### Additional Evaluation Criteria
@@ -304,44 +304,3 @@ Based on the [brief's acceptance criteria](BRIEF.md) and [wireframe design](Wire
 - Phase 1.2: Semantic HTML structure (proves data flow)
 - Phase 1.3: Testing infrastructure and dotenvx integration
 - Phase 2.1: shadcn/ui components with Tailwind v4, responsive carousel design
-
-## Time Allocation
-
-The project was completed iteratively across multiple phases:
-
-- **Phase 1.1** (~45 mins): Project setup, TypeScript config, CORS, shared types
-- **Phase 1.2** (~1.5 hours): Contentful integration, migrations, API routes, rich text rendering, end-to-end testing
-- **Phase 1.3** (~1.5 hours): Comprehensive test suite (54 tests), dotenvx environment management
-- **Phase 2.1** (~2-3 hours): shadcn/ui integration, carousel and accordion components, responsive design with Tailwind v4
-
-**Reasoning**: Building the complete technical architecture first ensures all requirements _can_ be met before investing time in UI polish. The working vertical slice proved:
-
-- Business users can update content ✅
-- Another platform can access data ✅
-- Images and descriptions work ✅
-- Category and product display works ✅
-
-With the foundation validated, iterative development continued with testing infrastructure and UI implementation.
-
-## What's Working Now
-
-1. Start both servers (`api` and `frontend`)
-2. Visit [http://localhost:3000](http://localhost:3000)
-3. You'll see:
-   - Responsive category carousel with navigation arrows
-   - All Moneybox product categories (ISAs, Pensions, Savings, Investments)
-   - Products displayed within each category slide
-   - Accordion interface for categories with multiple products
-   - Product images from Contentful CDN
-   - Rich text descriptions with proper formatting
-4. Log into Contentful and edit the content
-5. Refresh the page - your changes appear immediately
-
-This demonstrates the complete data flow from CMS → API → Frontend with a functional, responsive UI.
-
-## Notes
-
-- All products and categories are loaded from Contentful (no hardcoded data)
-- The UI uses shadcn/ui components with Tailwind v4 for responsive design
-- 54 tests validate all core functionality and acceptance criteria
-- Content updates in Contentful reflect immediately on the frontend
