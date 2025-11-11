@@ -139,8 +139,6 @@ npm run test:coverage  # in either api/ or frontend/
 - "Show an Image & Description" - Component and service tests verify this works
 - "Display all Categories/Products" - Route and component tests validate data display
 
-See [TESTING.md](TESTING.md) for detailed testing strategy and philosophy.
-
 ## Architecture Overview
 
 ### Tech Stack
@@ -240,28 +238,36 @@ This project follows **Shape Up's principle** of building one meaningful vertica
 - Establishes patterns for the team to follow
 - Allows early feedback on technical decisions
 
-### Phase 2.1: Expand Content & UI (In Progress)
+### Phase 1.3: Testing & Environment Management ✅
 
-- ✅ Add all product categories (ISAs, Pensions, Savings, Investments)
-- ✅ Add all products with images and descriptions
-- Add tests for existing functionality (API routes, components)
-- Build CategoryCarousel component (see [Wireframe.png](Wireframe.png))
-- Build ProductAccordion component (see [Wireframe.png](Wireframe.png))
-- Implement CSS styling and mobile-first responsive design
+- Comprehensive test suite (54 tests passing - 24 API + 30 frontend)
+- dotenvx integration for encrypted environment variables
+- API tests: routes, services, integration
+- Frontend tests: components
+- Tests validate acceptance criteria from brief
+
+### Phase 2.1: Carousel UI & Responsive Design ✅
+
+- shadcn/ui component library integrated (Carousel, Accordion, Card, Button)
+- Tailwind v4 CSS-first configuration
+- ProductCatalog component with responsive category carousel
+- Mobile-first responsive design (optimized for iPhone 11 Pro at 375px)
+- All products added with images and descriptions
+- Reasonable UX/UI implementation with carousel navigation and accordions
 
 ## Requirements Checklist
 
 Based on the [brief's acceptance criteria](BRIEF.md) and [wireframe design](Wireframe.png):
 
-| Requirement                                   | Status         | Implementation                                                                                                                              |
-| --------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Business user can update page**             | ✅ Complete    | Contentful CMS with user login. No developer needed to add/edit categories or products.                                                     |
-| **Accessible by another platform**            | ✅ Complete    | Separate Express API (port 3001) returns JSON. Mobile apps or other clients can consume same endpoints.                                     |
-| **Display all categories**                    | ✅ Complete    | CategoryList component renders all categories from Contentful.                                                                              |
-| **Display products within category**          | ✅ Complete    | ProductList component with category filtering. API supports `?categoryId=` query param.                                                     |
-| **Show image & description for each product** | ✅ Complete    | Images from Contentful CDN. Rich text descriptions rendered with proper formatting.                                                         |
-| **Meet UI requirements of wireframe**         | 🔄 In Progress | Phase 2.1 implementing CategoryCarousel and ProductAccordion to match wireframe. Currently showing semantic HTML structure without styling. |
-| **Any required tests**                        | 🔄 In Progress | Tests being added iteratively alongside features (API routes, components, integration tests).                                               |
+| Requirement                                   | Status      | Implementation                                                                                                           |
+| --------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Business user can update page**             | ✅ Complete | Contentful CMS with user login. No developer needed to add/edit categories or products.                                  |
+| **Accessible by another platform**            | ✅ Complete | Separate Express API (port 3001) returns JSON. Mobile apps or other clients can consume same endpoints.                  |
+| **Display all categories**                    | ✅ Complete | ProductCatalog component with responsive carousel displays all categories from Contentful.                                |
+| **Display products within category**          | ✅ Complete | Products displayed within category slides using accordion (multiple products) or direct display (single product).        |
+| **Show image & description for each product** | ✅ Complete | Images from Contentful CDN. Rich text descriptions rendered with proper formatting.                                      |
+| **Meet UI requirements of wireframe**         | ✅ Complete | Carousel navigation with accordions implemented using shadcn/ui. Mobile-first responsive design with Tailwind v4.        |
+| **Any required tests**                        | ✅ Complete | 54 tests passing (24 API + 30 frontend) validating routes, services, components, and integration with acceptance criteria. |
 
 ### Additional Evaluation Criteria
 
@@ -313,28 +319,25 @@ Given the 3-hour constraint, time was allocated as follows:
 - Images and descriptions work ✅
 - Category and product display works ✅
 
-With the foundation proven and full product catalog added, work continues iteratively:
-
-- Add tests for what's been built (API routes, components)
-- Build new UI components (carousel, accordions)
-- Add tests for new components
-- Implement responsive styling
-
 ## What's Working Now
 
 1. Start both servers (`api` and `frontend`)
 2. Visit [http://localhost:3000](http://localhost:3000)
 3. You'll see:
-   - Sample category with rich text description
-   - Sample product with image and rich text description
+   - Responsive category carousel with navigation arrows
+   - All Moneybox product categories (ISAs, Pensions, Savings, Investments)
+   - Products displayed within each category slide
+   - Accordion interface for categories with multiple products
+   - Product images from Contentful CDN
+   - Rich text descriptions with proper formatting
 4. Log into Contentful and edit the content
 5. Refresh the page - your changes appear immediately
 
-This demonstrates the complete data flow from CMS → API → Frontend, validating all core technical requirements.
+This demonstrates the complete data flow from CMS → API → Frontend with a functional, responsive UI.
 
 ## Notes
 
-- The application currently shows semantic HTML structure without CSS styling - focusing on proving technical architecture first
 - All products and categories are loaded from Contentful (no hardcoded data)
-- The wireframe-compliant UI (carousel, accordions, responsive styling) is in progress for Phase 2.1
-- Tests are being added iteratively alongside new features
+- The UI uses shadcn/ui components with Tailwind v4 for responsive design
+- 54 tests validate all core functionality and acceptance criteria
+- Content updates in Contentful reflect immediately on the frontend
